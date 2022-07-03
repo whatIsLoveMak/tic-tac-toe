@@ -1,6 +1,22 @@
 <template>
   <div class="app">
     {{ endGame }}
+    <div class="information">
+      <div class="player">
+        Сейчас ходит: <span>{{ this.player ? 'Игрок 1' : 'Игрок 2' }}</span>
+      </div>
+      <div class="score">
+        <div class="player">
+          <div>Игрок 1 :</div>
+          <div class="number">{{ count1 }}</div>
+        </div>
+        <div class="player">
+          <div>Игрок 2 :</div>
+          <div class="number">{{ count2 }}</div>
+        </div>
+      </div>
+      <t-button @click.native="surrender" :inner-text="'surrender'" />
+    </div>
     <div class="grid">
       <div
         @click="clickPlayer(item)"
@@ -11,11 +27,20 @@
         <div>{{ item.value }}</div>
       </div>
     </div>
+    <t-modal
+      :winner="winner"
+      :items="gridItems"
+      @close-modal="closeModal"
+      v-if="modalView"
+    />
   </div>
 </template>
 
 <script>
+import TModal from '@/components/tModal'
+import TButton from '@/UI/tButton'
 export default {
+  components: { TButton, TModal },
   data() {
     return {
       player: true,
@@ -57,7 +82,9 @@ export default {
           value: '',
         },
       ],
-      row1: [],
+      modalView: false,
+      count1: 0,
+      count2: 0,
     }
   },
   methods: {
@@ -66,6 +93,17 @@ export default {
         this.player ? (item.value = 'x') : (item.value = '0')
         this.player = !this.player
       }
+    },
+    surrender() {
+      this.modalView = true
+      if (this.player) {
+        this.count2++
+      } else {
+        this.count1++
+      }
+    },
+    closeModal() {
+      this.modalView = false
     },
   },
   computed: {
@@ -174,6 +212,13 @@ export default {
         return ''
       }
     },
+    winner() {
+      if (this.player) {
+        return 'Игрок 2'
+      } else {
+        return 'Игрок 1'
+      }
+    },
   },
 }
 </script>
@@ -183,14 +228,51 @@ export default {
   border-radius: 5px;
   outline: 0px;
 }
+.player {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & span {
+    color: red;
+    font-size: 25px;
+  }
+}
+.number {
+  font-size: 30px;
+  font-weight: 600;
+  color: red;
+}
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  width: 900px;
-  height: 900px;
+  width: 800px;
+  height: 800px;
   gap: 20px;
   transition: all 0.4s ease;
+}
+.score {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+.button {
+  padding: 10px 20px;
+  margin-bottom: 30px;
+  cursor: pointer;
+  background: #a7eece;
+  box-shadow: 5px 5px 10px #2a4b41;
+  transition: all 0.4s ease;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  &:hover {
+    box-shadow: 0px 0px 0px #2a4b41;
+  }
 }
 .grid-item {
   background: #a7eece;
@@ -199,6 +281,12 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 50px;
+  box-shadow: 5px 5px 10px #2a4b41;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 0px 0px #2a4b41;
+  }
 }
 
 input + div {
@@ -215,10 +303,11 @@ body {
 .app {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
   position: relative;
   align-items: center;
   justify-content: center;
   font-size: 18px;
+  gap: 30px;
 }
 </style>
