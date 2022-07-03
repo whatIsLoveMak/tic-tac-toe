@@ -22,7 +22,7 @@
         @click="clickPlayer(item)"
         v-for="item in gridItems"
         :key="item.id"
-        class="grid-item"
+        :class="setImg(item.value)"
       >
         <div>{{ item.value }}</div>
       </div>
@@ -96,14 +96,20 @@ export default {
     },
     surrender() {
       this.modalView = true
-      if (this.player) {
-        this.count2++
-      } else {
-        this.count1++
-      }
+      this.player ? this.count2++ : this.count1++
+      this.player = true
     },
     closeModal() {
       this.modalView = false
+    },
+    setImg(value) {
+      if (value === '0') {
+        return 'grid-item circle'
+      } else if (value === 'x') {
+        return 'grid-item cross'
+      } else {
+        return 'grid-item'
+      }
     },
   },
   computed: {
@@ -280,7 +286,7 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-size: 50px;
+  font-size: 0px;
   box-shadow: 5px 5px 10px #2a4b41;
   transition: all 0.4s ease;
   cursor: pointer;
@@ -288,7 +294,18 @@ export default {
     box-shadow: 0px 0px 0px #2a4b41;
   }
 }
-
+.circle {
+  background-image: url('./img/circle.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #a7eece;
+}
+.cross {
+  background-image: url('./img/cross.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #a7eece;
+}
 input + div {
   color: white;
   transition: all 0.4s ease;
