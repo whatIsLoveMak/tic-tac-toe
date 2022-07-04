@@ -12,6 +12,11 @@ import TButton from '@/UI/tButton'
 export default {
   name: 'tModal',
   components: { TButton },
+  data() {
+    return {
+      elem: false,
+    }
+  },
   props: {
     winner: {
       type: String,

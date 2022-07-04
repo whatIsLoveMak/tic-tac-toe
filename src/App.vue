@@ -1,6 +1,5 @@
 <template>
   <div class="app">
-    {{ endGame }}
     <div class="information">
       <div class="player">
         Сейчас ходит: <span>{{ this.player ? 'Игрок 1' : 'Игрок 2' }}</span>
@@ -94,13 +93,20 @@ export default {
         this.player = !this.player
       }
     },
-    surrender() {
+    plusCounter() {
       this.modalView = true
+      // this.player ? this.count2++ : this.count1++
+    },
+    surrender() {
+      //this.modalView = true
+      //this.player ? this.count2++ : this.count1++
+      //this.player = true
+    },
+    closeModal(value) {
       this.player ? this.count2++ : this.count1++
       this.player = true
-    },
-    closeModal() {
-      this.modalView = false
+      this.modalView = value
+      console.log(this.modalView)
     },
     setImg(value) {
       if (value === '0') {
@@ -120,97 +126,97 @@ export default {
         this.gridItems[1].value === 'x' &&
         this.gridItems[2].value === 'x'
       ) {
-        return alert('player 1 won')
+        return true
       } else if (
         this.gridItems[0].value === '0' &&
         this.gridItems[1].value === '0' &&
         this.gridItems[2].value === '0'
       ) {
-        return alert('player 2 won')
+        return true
       } else if (
         this.gridItems[3].value === 'x' &&
         this.gridItems[4].value === 'x' &&
         this.gridItems[5].value === 'x'
       ) {
-        return alert('player 1 won')
+        return true
       } else if (
         this.gridItems[3].value === '0' &&
         this.gridItems[4].value === '0' &&
         this.gridItems[5].value === '0'
       ) {
-        return alert('player 2 won')
+        return true
       } else if (
         this.gridItems[6].value === 'x' &&
         this.gridItems[7].value === 'x' &&
         this.gridItems[8].value === 'x'
       ) {
-        return alert('player 1 won')
+        return true
       } else if (
         this.gridItems[6].value === '0' &&
         this.gridItems[7].value === '0' &&
         this.gridItems[8].value === '0'
       ) {
-        return alert('player 2 won')
+        return true
       } else if (
         this.gridItems[0].value === 'x' &&
         this.gridItems[3].value === 'x' &&
         this.gridItems[6].value === 'x'
       ) {
-        return alert('player 1 won')
+        return true
       } else if (
         this.gridItems[0].value === '0' &&
         this.gridItems[3].value === '0' &&
         this.gridItems[6].value === '0'
       ) {
-        return alert('player 2 won')
+        return true
       } else if (
         this.gridItems[1].value === 'x' &&
         this.gridItems[4].value === 'x' &&
         this.gridItems[7].value === 'x'
       ) {
-        return alert('player 1 won')
+        return true
       } else if (
         this.gridItems[1].value === '0' &&
         this.gridItems[4].value === '0' &&
         this.gridItems[7].value === '0'
       ) {
-        return alert('player 2 won')
+        return true
       } else if (
         this.gridItems[2].value === 'x' &&
         this.gridItems[5].value === 'x' &&
         this.gridItems[8].value === 'x'
       ) {
-        return alert('player 1 won')
+        return true
       } else if (
         this.gridItems[2].value === '0' &&
         this.gridItems[5].value === '0' &&
         this.gridItems[8].value === '0'
       ) {
-        return alert('player 2 won')
+        return true
       } else if (
         this.gridItems[0].value === 'x' &&
         this.gridItems[4].value === 'x' &&
         this.gridItems[8].value === 'x'
       ) {
-        return alert('player 1 won')
+        return true
       } else if (
         this.gridItems[0].value === '0' &&
         this.gridItems[4].value === '0' &&
         this.gridItems[8].value === '0'
       ) {
-        return alert('player 2 won')
+        return true
       } else if (
         this.gridItems[2].value === 'x' &&
         this.gridItems[4].value === 'x' &&
         this.gridItems[6].value === 'x'
       ) {
-        return alert('player 1 won')
+        return true
       } else if (
         this.gridItems[2].value === '0' &&
         this.gridItems[4].value === '0' &&
         this.gridItems[6].value === '0'
       ) {
-        return alert('player 2 won')
+        return true
       }
       if (filteredArr.length === this.gridItems.length) {
         return alert('game over')
@@ -219,11 +225,16 @@ export default {
       }
     },
     winner() {
-      if (this.player) {
+      if (this.player == true) {
         return 'Игрок 2'
       } else {
         return 'Игрок 1'
       }
+    },
+  },
+  watch: {
+    endGame() {
+      this.plusCounter()
     },
   },
 }
