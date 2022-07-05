@@ -1,7 +1,8 @@
 <template>
   <div class="modal-body">
     <div class="modal-content">
-      <div class="title">Победил {{ winner }}</div>
+      <div class="title" v-if="winner !== 'Ничья'">Победил {{ winner }}</div>
+      <div class="title" v-else>{{ winner }}</div>
       <t-button @click.native="newGame" :inner-text="'new game'" />
     </div>
   </div>

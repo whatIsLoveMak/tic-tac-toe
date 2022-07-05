@@ -15,6 +15,7 @@
         </div>
       </div>
       <t-button @click.native="surrender" :inner-text="'surrender'" />
+      <t-button @click.native="newGame" :inner-text="'restart'" />
     </div>
     <div class="grid">
       <div
@@ -30,7 +31,13 @@
       :winner="winner"
       :items="gridItems"
       @close-modal="closeModal"
-      v-if="modalView"
+      v-if="endGame"
+    />
+    <t-modal
+      :winner="'Ничья'"
+      :items="gridItems"
+      @close-modal="close"
+      v-if="endGame === false"
     />
   </div>
 </template>
@@ -93,20 +100,27 @@ export default {
         this.player = !this.player
       }
     },
-    plusCounter() {
+    newGame() {
+      this.gridItems.forEach((item) => (item.value = ''))
+      this.count1 = 0
+      this.count2 = 0
+    },
+    openModal() {
       this.modalView = true
-      // this.player ? this.count2++ : this.count1++
+    },
+    close() {
+      this.modalView = false
+      this.player = true
     },
     surrender() {
-      //this.modalView = true
-      //this.player ? this.count2++ : this.count1++
-      //this.player = true
+      this.modalView = true
+      this.player ? this.count2++ : this.count1++
+      this.player = true
     },
     closeModal(value) {
       this.player ? this.count2++ : this.count1++
       this.player = true
       this.modalView = value
-      console.log(this.modalView)
     },
     setImg(value) {
       if (value === '0') {
@@ -219,7 +233,7 @@ export default {
         return true
       }
       if (filteredArr.length === this.gridItems.length) {
-        return alert('game over')
+        return false
       } else {
         return ''
       }
@@ -234,7 +248,7 @@ export default {
   },
   watch: {
     endGame() {
-      this.plusCounter()
+      this.openModal()
     },
   },
 }
@@ -278,7 +292,8 @@ export default {
 }
 .button {
   padding: 10px 20px;
-  margin-bottom: 30px;
+  margin-top: 30px;
+  margin-right: 10px;
   cursor: pointer;
   background: #a7eece;
   box-shadow: 5px 5px 10px #2a4b41;
